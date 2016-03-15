@@ -35,7 +35,7 @@ error_reporting(E_ALL);
 
   
 //-------------end--------------
-  //ftp_close($conn_id);
+  ftp_close($conn_id);
 ?>
 </body>
 </html>
