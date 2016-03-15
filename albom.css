@@ -1,0 +1,125 @@
+.albTitle{
+  display:inline-block;
+  border-radius: 8px;
+  border : 1px solid;
+  margin: 5px;
+  padding:0;
+  overflow: hidden;
+  height:120px;
+  width: 120px;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.16), 0px 2px 10px 0px rgba(0, 0, 0, 0.12) !important;
+
+}
+
+.albName{
+  margin:0px;
+  padding:0 5 ;
+  font-size:small;
+  border-bottom: 1px black solid;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  background-color:#CDD;
+  height:1.5em;
+  overflow:hidden;
+}
+a:link{ 
+ text-decoration:none;  
+ font-style:normal;
+ color:gray;
+}
+
+img.albTitle{
+  margin:0;
+}
+
+
+.albomField{
+  margin: 10px;
+  padding-top: 2em;
+  vertical-align:top;
+}
+
+
+.albPhoto{
+  display:inline-block;
+  margin: 5px;
+  width:160px;
+  text-align:center;
+}
+
+.albPhoto img{
+ border-radius: 5px;
+ box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.16), 0px 2px 10px 0px rgba(0, 0, 0, 0.12) !important;
+ box-sizing: border-box;
+ vertical-align:middle;
+}
+
+
+.mainMenu{
+  margin:0px;
+  background-color:#EEE;
+  position:fixed;
+  top:0;
+  width:100%;
+  line-height: 2;
+  z-index:10;
+  border-bottom: 1px #CCC solid;
+}
+
+.mainMenu a{
+  font-style:normal;
+  color:#CCC;
+}
+
+.menuHeader{
+  display: inline;
+  margin-left: 50px;
+  background-color:#DFDFDF;
+  padding: 3 10;
+  
+}
+
+.albLoc{
+  display:inline;
+  margin-left:20px;
+}
+
+.rightMenu{
+  display: inline;
+  float:right;
+  padding-right:30px;
+}
+
+.settings{
+  display: inline;
+  border-radius: 3px;
+  border: 1px solid #CCC;
+  background-color:#DFDFDF;
+  padding-left:5px; 
+  padding-right:5px;
+  margin-right:10px;
+}
+
+
+body{
+ font-family: "Fira Sans","Source Sans Pro",Helvetica,Arial,sans-serif;
+ padding:0px;
+ margin:0px;
+}
+
+h2{
+  margin-top: 0px;
+  border: 1px gray dotted;
+  border-radius: 5px;
+  text-align:center;
+}
+
+.navi{
+  display: inline;
+  vertical-align:top;
+  font-size: 700%;
+}
+
+.pic {
+    display: inline;
+}
