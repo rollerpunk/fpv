@@ -128,7 +128,7 @@ class Albom {
         unset($this->contents[$i]);  // delete element
         if ($i==$this->titleImgNo)
         {
-          $i+=1;  //update cover img
+          $this->titleImgNo+=1;  //update cover img
         }
                 
       }

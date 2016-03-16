@@ -15,11 +15,11 @@ error_reporting(E_ALL);
 
 
 
-  set_time_limit(0);  //dizable watchog to enable picture proccessing
+ // set_time_limit(0);  //dizable watchog to enable picture proccessing
   require "classes.php";
-  
-  //session_start(); // Start the session.must be after class defenitin
-
+//      session_destroy();
+  session_start(); // Start the session.must be after class defenitin
+echo "gergg";
   printMenuP1(); // create common part of top menu
   $conn_id=getFtp();  //connect to ftp
 //-----------start---------
