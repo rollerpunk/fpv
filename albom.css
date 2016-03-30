@@ -71,9 +71,10 @@ img.albTitle{
   position:fixed;
   top:0;
   width:100%;
-  line-height: 2;
+  height: 35px;
   z-index:10;
   border-bottom: 1px #CCC solid;
+  overflow:visible;
 }
 
 .mainMenu a{
@@ -95,6 +96,8 @@ img.albTitle{
   padding-left:10px;
   padding-right:10px;
   border-radius: 4px;
+  font-size:30px;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.16), 0px 2px 10px 0px rgba(0, 0, 0, 0.12) !important;
 }
 
 .albLoc{
@@ -106,6 +109,7 @@ img.albTitle{
   display: inline-block;
   float:right;
   padding-right:30px;
+  padding-top: 5px;
 }
 
 .settings{
