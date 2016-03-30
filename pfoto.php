@@ -29,7 +29,13 @@ document.onkeydown = function(e) {
 </script>
 <body>
 
+
 <?php
+
+//TODO:
+// 1) add slideshow
+// 2) add photo details
+// 3) fit foto to window/div
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -48,20 +54,17 @@ error_reporting(E_ALL);
   $location=$_GET["loc"];  // get photo location 
   $alboms = $_SESSION["alboms"];
   
-//TODO: fix
   $al= substr($location,0,strpos($location,":")); //get albom id
   $pic= substr($location,strpos($location,":")+1);//get pic
 
-
-  echo "<div class=\"albLoc\"><a href=\"index.php\">Home</a>"; // link to album list 
+  echo "<div class=\"albLoc\"><a href=\"index.php\">Home</a> : "; // link to album list 
   echo " <a href=\"album.php?loc=" . $al . "\">" . $_SESSION["alboms"][$al]->albomName . "</a>"; //link to album
   echo " : <b>" . $pic . "</b></div>"; //photo name
+
   printMenuP2(); // common menu finish
  
 
 //print foto
-  
-  
   $alboms[$al]->ftp_id = $conn_id; //ftp_id is lost during sessions
   $albom = $_SESSION["alboms"][$al]->printFoto();
 

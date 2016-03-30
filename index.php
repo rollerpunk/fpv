@@ -3,9 +3,9 @@
 <head>
 <link rel="icon" href="albom.ico" type="image/x-icon">
 <link rel="stylesheet" href="albom.css">
+<script src="functions.js" type="text/javascript"> </script>
 </head>
 <body>
-123
 <?php
 
 
@@ -17,15 +17,15 @@ error_reporting(E_ALL);
 
  // set_time_limit(0);  //dizable watchog to enable picture proccessing
   require "classes.php";
-//      session_destroy();
   session_start(); // Start the session.must be after class defenitin
-echo "gergg";
   printMenuP1(); // create common part of top menu
   $conn_id=getFtp();  //connect to ftp
 //-----------start---------
   
   printMenuP2();
   session_unset(); // clear session variables
+
+  
   echo "<div class=\"albomField\">";
   scanDirs($conn_id,"/"); // create albums according to ftp file tree
   $_SESSION["alboms"] = $GLOBALS['alboms'];
@@ -33,11 +33,15 @@ echo "gergg";
   printAlbums();  //list all albums
   echo "</div>";
 
-  
+  createSettings();
 //-------------end--------------
   ftp_close($conn_id);
 ?>
 </body>
+
+
+
+
 </html>
 
 

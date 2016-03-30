@@ -80,17 +80,10 @@ function autoRotateImage($image) {
 //------------------------------------------
 function scanDirs($ftp_id,$startDir)
 {
-
-//add to array new album object to reffer in a future
-  // TODO:
-  // 1) find first img if no settings
-  // 2) do not add folders without imgs
-  
-
   try {
    $tmpAlb = new Albom($startDir,$ftp_id);
-   array_push($GLOBALS['alboms'],$tmpAlb);
-  } catch (Exception $e) {
+   array_push($GLOBALS['alboms'],$tmpAlb); //add to array new album object to reffer in a future
+  } catch (Exception $e) { // do not add unsupported formats
    ;// album is not added
   }
 
@@ -135,18 +128,15 @@ function getFtp($ftp_server = "localhost",$ftp_user_name = "albom", $ftp_user_pa
 
 //first part
 function printMenuP1(){
-  echo "<div class=\"mainMenu\">
-  <div class=\"menuHeader\">Remote ftp album viewer</div>";
+  echo "<div class=\"mainMenu\"><div class=\"menuHeader\">Remote ftp album viewer</div>";
  }
 
 
 //ending
 function printMenuP2(){
   echo "<div class=\"rightMenu\">
-  <a href=\"help.htm\"><div class =\"settings\">?</div></a> 
-  <a href=\"setup\"><div class =\"settings\">=</div></a>
-  </div> 
-  </div>";
+<a href=\"help.htm\" class =\"settings\">?</a>
+<a href=\"#\" class =\"settings\" onclick=\"settingsShow()\"  >=</a></div></div>";
 }
 
 //--------------------------------
@@ -174,6 +164,7 @@ function printAlbom($ftplocation,$ftp_id){
   $contents = ftp_nlist($ftp_id, $ftplocation);
   for ($i = 0 ; $i < count($contents) ; $i++)
   {
+    
     $server_file = $contents[$i];
 
     // we are looking for images only  
@@ -189,16 +180,46 @@ function printAlbom($ftplocation,$ftp_id){
       else
       {
         echo "<h1>FTP ERROR</h1>\nNot possible to get img:" . $server_file;          
-      }
-   
-    }      
+      }   
+    }
+          
   }
   echo "</div>";
+}
+
+//---------------------------------
+//removes element from array and updates indexes
+//---------------------------------
+function delArrayElem($array,$id)
+{
+  for ($i = $id ; $i < count($array)-1 ; $i++)
+  {
+      $array[$i]=$array[$i+1];  //TODO: may be optimized with "while"
   }
+  unset ($array[count($array)-1]);
+  return $array;
+}
 
 
+function createSettings()
+{//TODO: make it dinamicaly created
 
+ echo "<div id=\"setup\"><form>
 
+        <fieldset>
+        <legend>FTP configuration: </legend>
+        <div id=\"fkbx-text\">FTP server:</div>
+        <input id=\"ftpServer\" aria-hidden=\"true\" autocomplete=\"off\" type=\"url\">
+        <div>FTP user name:</div>
+        <input id=\"ftpUser\" aria-hidden=\"true\" autocomplete=\"off\" type=\"text\">
+        <div>FTP password:</div>
+        <input id=\"ftpPass\" aria-hidden=\"true\" autocomplete=\"off\" type=\"password\">
+        <br><hr><br>
+        <button onclick=\"alert save\">Save</button>
+         </fieldset>
+
+  </form></div>";
+}
 
 //-------------for future-----------
 //----------------------------------

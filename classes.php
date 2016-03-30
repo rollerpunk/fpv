@@ -61,13 +61,16 @@ class Albom {
 
     $local_file = $GLOBALS['local_file'];
     
-    echo "<div class=\"albomField\">";
-    
-    
+    echo "<div class=\"albomField\">";   
 
     for ($i = 0 ; $i < count($this->contents) ; $i++)
     {
+      try{
       $server_file = $this->contents[$i];
+      }
+      catch (Exception $e) {
+        continue; // not supported format,skip it
+      }
 
       // we are looking for images only  
       if ($this->isExtentionOk($server_file) != false)
@@ -125,7 +128,7 @@ class Albom {
     //  echo "" . $this->contents[$i] . "<br>";
       if ($this->isExtentionOk($this->contents[$i])== FALSE) 
       {                     
-        unset($this->contents[$i]);  // delete element
+        $this->contents = delArrayElem($this->contents,$i);  // delete element
         if ($i==$this->titleImgNo)
         {
           $this->titleImgNo+=1;  //update cover img
@@ -134,7 +137,7 @@ class Albom {
       }
     }    
     if (count($this->contents)==0) 
-    {
+    { // folder should not be displayed.
       throw new Exception('No supported formats inside album');
     }
   }
