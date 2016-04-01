@@ -21,12 +21,16 @@ error_reporting(E_ALL);
   printMenuP1(); // create common part of top menu
   $conn_id=getFtp();  //connect to ftp
 
+  if (!isset($_SESSION['FirstName'])) { //check if needed data present in session
+    header( "Location: index.php" ); //start over
+  }
+
 //-----------start-------
 
-  $location=$_GET["loc"];  // get album location  
+  $location=$_GET["loc"];  // get album location 
   $alboms = $_SESSION["alboms"];
 
-  echo "<div class=\"albLoc\"><a href=\"index.php\">Home</a> : ". $alboms[$location]->albomName . "</div>"; // link to album list
+  echo "<div class=\"albLoc\"><a href=\"index.php\">Home</a> -> ". $alboms[$location]->albomName . "</div>"; // link to album list
   printMenuP2(); // common menu finish
 
   // print albums

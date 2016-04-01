@@ -128,7 +128,7 @@ function getFtp($ftp_server = "localhost",$ftp_user_name = "albom", $ftp_user_pa
 
 //first part
 function printMenuP1(){
-  echo "<div class=\"mainMenu\"><div class=\"menuHeader\">Remote ftp album viewer</div>";
+  echo "<div class=\"mainMenu noselect\"><div class=\"menuHeader\">allIView</div>";
  }
 
 
@@ -204,7 +204,7 @@ function delArrayElem($array,$id)
 function createSettings()
 {//TODO: make it dinamicaly created
 
- echo "<div id=\"setup\"><form>
+ echo "<div id=\"setup\"style=\"display: none;\"><form>
 
         <fieldset>
         <legend>FTP configuration: </legend>
