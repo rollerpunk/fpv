@@ -136,7 +136,8 @@ function printMenuP1(){
 function printMenuP2(){
   echo "<div class=\"rightMenu\">
 <a href=\"help.htm\" class =\"settings\">?</a>
-<a href=\"#\" class =\"settings\" onclick=\"settingsShow()\"  >=</a></div></div>";
+<a href=\"#\" class =\"settings\" onclick=\"settingsShow()\"  >=</a></div></div>";// TODO: should be only for loginned users
+  echo "<div class=\"menuLine\"></div>";
 }
 
 //--------------------------------
@@ -205,9 +206,23 @@ function createSettings()
 {//TODO: make it dinamicaly created
 
  echo "<div id=\"setup\"style=\"display: none;\"><form>
-
+        
         <fieldset>
-        <legend>FTP configuration: </legend>
+        <legend>View options: </legend>
+        - sort alboms/imgs<br> - show/hide location<br> - rotare/zoom/crop imgs <br> - else
+        </fieldset>
+        <fieldset>
+         
+        <legend>Account configuration: </legend>
+        <fieldset>
+        <legend>User options: </legend>
+        - change pass<br><button onclick=\"alert save\">Add server</button><br>
+        <button onclick=\"alert save\">Remove server</button><br> - remove user<br> 
+        - make liblary public
+
+        </fieldset>
+        <fieldset>
+        <legend>Ftp options: </legend>
         <div id=\"fkbx-text\">FTP server:</div>
         <input id=\"ftpServer\" aria-hidden=\"true\" autocomplete=\"off\" type=\"url\">
         <div>FTP user name:</div>
@@ -216,33 +231,103 @@ function createSettings()
         <input id=\"ftpPass\" aria-hidden=\"true\" autocomplete=\"off\" type=\"password\">
         <br><hr><br>
         <button onclick=\"alert save\">Save</button>
-         </fieldset>
+        
+        </fieldset>
+        </fieldset>
+                 
 
+ 
   </form></div>";
 }
 
-//-------------for future-----------
-//----------------------------------
+
+//--------------------
+//connect to DB
+//--------------------
+function dbConnect($server="localhost",$db="albom",$user="albom",$pass="albom")
+{
+  // Create connection
+  $conn = new mysqli($server, $user, $pass,$db);
+
+  // Check connection
+  if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+  }
+  return $conn; 
+}// don't forget to close a connection with   $conn->close();
 
 
-//  //$folder=ftp_pwd($ftp_id); 
+
+//---------------------
+//create initial table
+//---------------------
+function initialTable($servername = "localhost",$username = "albom",$password = "albom",$dbname = "albom")
+{
+
+  $conn = dbConnect();
+
+  // sql to create table
+  $sql = "SET SQL_MODE = NO_AUTO_VALUE_ON_ZERO;
+CREATE TABLE IF NOT EXISTS userlist (
+u varchar(50) NOT NULL,
+p text NOT NULL,
+d varchar(30) NOT NULL
+PRIMARY KEY (`u`)
+)";
+
+  if ($conn->query($sql) === TRUE) {
+     $result= true;
+  } else {
+     echo "Error creating table: " . $conn->error;
+     $result= false; 
+  }
+
+  $conn->close();
+  return $result;
+}
 
 
-//get files in dir   
-//    $contents = ftp_nlist($conn_id, '/');
-//----------------------
+//--------------------
+// to do not store user/pass as text we use hash
+//--------------------
+function hashIt($item,$salty=false)
+{
+  if ($salty== false )
+  {// no salt
+    return crypt($item);
+  }
+  else
+  {
+    // A higher "cost" is more secure but consumes more processing power
+    $cost = 10;
 
-// list dir
-//$dir    = '.';
-//$files1 = scandir($dir);
+    // Create a random salt
+    $salt = strtr(base64_encode(mcrypt_create_iv(16, MCRYPT_DEV_URANDOM)), '+', '.');
+
+    // Prefix information about the hash so PHP knows how to verify it later.
+    // "$2a$" Means we're using the Blowfish algorithm. The following two digits are the cost parameter.
+    $salt = sprintf("$2a$%02d$", $cost) . $salt;
+
+    // Hash the password with the salt
+    return crypt($password, $salt);
+  }
+}
 
 
-//-------------------
-//    if (!ftp_chdir($this->ftp_id,$this->location))
-  //  {
-    //  echo "<h1>FTP ERROR</h>\nNot possible to change dir to" . $this->location;
-      //return FALSE;
-    //}
+//---------------------
+// compare hashes
+//---------------------
+function hashOk($hashed,$original,$salty=false)
+{
+  if ($salty == false)
+  { //no salt was added
+     hash_equals($hashed, crypt($original));
+  }
+  else
+  { // Hashing the item with its hash as the salt returns the same hash
+     hash_equals($hashed, crypt($original, $hashed));
+  }
+}
 
 
 ?>

@@ -21,7 +21,7 @@ error_reporting(E_ALL);
   printMenuP1(); // create common part of top menu
   $conn_id=getFtp();  //connect to ftp
 
-  if (!isset($_SESSION['FirstName'])) { //check if needed data present in session
+  if (!isset($_SESSION['alboms'])) { //check if needed data present in session
     header( "Location: index.php" ); //start over
   }
 
@@ -39,6 +39,7 @@ error_reporting(E_ALL);
 
 //---------end----------
   ftp_close($conn_id); // close ftp
+  createSettings();
 ?>
 </body>
 </html>

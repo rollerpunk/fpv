@@ -78,8 +78,10 @@ class Albom {
         // try to download $server_file and save to $local_file
         if (ftp_get($this->ftp_id, $local_file, $server_file, FTP_BINARY))
         { 
-          echo "<a href=\"pfoto.php?loc=" . $_GET["loc"] . ":" . $i ."\"><div class=\"albPhoto\">";          
-          echo "<img src=\"" . scaleImg($local_file) . "\" title=\"". $server_file ."\"></div></a>\n";      
+          echo "<div class=\"albPhoto\">
+                   <a href=\"pfoto.php?loc=" . $_GET["loc"] . ":" . $i ."\">
+                   <div style=\"padding:3px;\">";          
+          echo "<img src=\"" . scaleImg($local_file) . "\" title=\"". $server_file ."\"></div></a></div>\n";      
         }
         else
         {
