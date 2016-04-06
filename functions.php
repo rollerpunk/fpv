@@ -109,7 +109,7 @@ function scanDirs($ftp_id,$startDir)
 //create connection to ftp and return descriptor
 //--------------------------------
 function getFtp($ftp_server = "localhost",$ftp_user_name = "albom", $ftp_user_pass = "albom")
-{
+{ //TODO get login date from coockis
 //connect to ftp
    $conn_id = ftp_connect($ftp_server);
    if (!@ftp_login($conn_id, $ftp_user_name, $ftp_user_pass))
@@ -294,7 +294,7 @@ function hashIt($item,$salty=false)
 {
   if ($salty== false )
   {// no salt
-    return crypt($item);
+    return crypt($item,'$2a$07$usesomesillystringforsalt$');
   }
   else
   {
@@ -302,14 +302,16 @@ function hashIt($item,$salty=false)
     $cost = 10;
 
     // Create a random salt
-    $salt = strtr(base64_encode(mcrypt_create_iv(16, MCRYPT_DEV_URANDOM)), '+', '.');
+    $size = mcrypt_get_iv_size(MCRYPT_CAST_256, MCRYPT_MODE_CFB);
+    $iv = mcrypt_create_iv($size, MCRYPT_DEV_RANDOM);
+    $salt = strtr(base64_encode($iv), '+', '.');
 
     // Prefix information about the hash so PHP knows how to verify it later.
     // "$2a$" Means we're using the Blowfish algorithm. The following two digits are the cost parameter.
     $salt = sprintf("$2a$%02d$", $cost) . $salt;
 
     // Hash the password with the salt
-    return crypt($password, $salt);
+    return crypt($item, $salt);
   }
 }
 
@@ -321,14 +323,36 @@ function hashOk($hashed,$original,$salty=false)
 {
   if ($salty == false)
   { //no salt was added
-     hash_equals($hashed, crypt($original));
+     return hash_equals($hashed, crypt($original));
   }
   else
   { // Hashing the item with its hash as the salt returns the same hash
-     hash_equals($hashed, crypt($original, $hashed));
+     return hash_equals($hashed, crypt($original, $hashed));
   }
 }
 
+if(!function_exists('hash_equals')) //emulate this function if not present
+{
+  function hash_equals($str1, $str2)
+  {
+    if(strlen($str1) != strlen($str2))
+    {
+      return false;
+    }
+    else
+    {
+      $res = $str1 ^ $str2;
+      for($i = strlen($str1) - 1; $i >= 0; $i--)
+      {
+        if ($str1[$i] != $str2[$i])
+        {
+          return false;
+        }
+      }
+      return true;
+    }
+  }
+}
 
 ?>
 

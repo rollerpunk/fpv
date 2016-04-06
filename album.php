@@ -26,7 +26,7 @@ error_reporting(E_ALL);
   }
 
 //-----------start-------
-
+//TODO it should be possible to have direct link to view
   $location=$_GET["loc"];  // get album location 
   $alboms = $_SESSION["alboms"];
 

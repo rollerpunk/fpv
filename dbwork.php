@@ -33,7 +33,7 @@ function userOk($name,$pass)
   $xx=hashIt($name);
   $sth->bind_param('s',$xx);
   $sth->execute();
-
+  
   /* bind result variables */
   $sth->bind_result($dbPass,$table);
 
@@ -43,24 +43,28 @@ function userOk($name,$pass)
     /* close all */
     $sth->close();
     $conn->close();
-    return false; //no such user
+
+    return 1; //no such user
   
   }
   //check pass
-  if (!hashOk($dbPass,true))
+  if (!hashOk($dbPass,$pass,true))
   {
     /* close all */
     $sth->close();
     $conn->close();
-    return false;// wrong password
+    return 2;// wrong password
   }  
 
   /* close all */
   $sth->close();
   $conn->close();
 
+  //TODO: seve ftplogin date to cookies 
+
   // user/pass is ok. return the table to work with
-  return $table;
+  return 0;
+  
 }
 
 
@@ -74,7 +78,7 @@ function addUser($name,$pass,$table)
   $conn=dbConnect();
   //-------------
 
-  $sql = "INSERT INTO userlist (n, p, d)
+  $sql = "INSERT INTO userlist (u, p, d)
   VALUES ('" . hashIt($name) . "', '" . hashIt($pass,true) . "', '" . $table . "')";
 
   if ($conn->query($sql) === TRUE) {

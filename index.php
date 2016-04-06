@@ -17,13 +17,27 @@ error_reporting(E_ALL);
 
  // set_time_limit(0);  //dizable watchog to enable picture proccessing
   require "classes.php";
-  session_start(); // Start the session.must be after class defenitin
+  session_start(); // Start the session.must be after class defenition
+
+  if(isset($_GET["galery"])) // check if it was direct link
+  {
+    $_SESSION["dbname"]=$_GET["galery"];
+    //TODO: get ftp staff
+  }
+
+  if(!isset($_SESSION["dbname"]))// check if galery name is know.it may go from login or from link
+  {
+    header( "Location: login.php" ); //not enought info to continue. go to login
+  }
+
+
+
   printMenuP1(); // create common part of top menu
   $conn_id=getFtp();  //connect to ftp
 //-----------start---------
   
   printMenuP2();
-  session_unset(); // clear session variables
+ 
 
   
   echo "<div class=\"albomField\">";
