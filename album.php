@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<title>allIView</title>
 <link rel="icon" href="albom.ico" type="image/x-icon">
 <link rel="stylesheet" href="albom.css">
 </head>

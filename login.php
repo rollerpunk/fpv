@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="icon" href="albom.ico" type="image/x-icon">
+<title>allIView</title>
+<link rel="icon" href="albom.png" type="image/x-icon">
 <link rel="stylesheet" href="albom.css">
 </head>
 <body>
@@ -14,14 +15,17 @@ error_reporting(E_ALL);
 
 
 
-  require "dbwork.php";
+  require "functions.php";
   session_start(); // Start the session.must be after class defenitin
+  session_unset(); // clear session variables 
+  cleanCookie(); // clear all cookies
   printMenuP1(); // create common part of top menu
 
 //-----------start-------
 
+  
   printMenuP2(); // common menu finish
-  session_unset(); // clear session variables 
+  
   
 
   $msg = '';  
@@ -30,16 +34,11 @@ error_reporting(E_ALL);
   //on login
   if (isset($_POST['login']) && !empty($_POST['username']) && !empty($_POST['password'])) {
    $xx=userOk($_POST['username'], $_POST['password']);
-   if ($xx==0) 
-    {
-      $_SESSION['username'] = $_POST['username']; //FIXME
-      $_SESSION['dbname'] = "test"; //FIXME            
+   if ($xx) 
+   {          
       header( "Location: index.php" ); //login ok.go to liblary TODO: use correct lib
    }else {
-      if ($xx==1) //TODO maybe it'sbetter to uniite for better security
-        $msg = '<h3>Wrong username</h3>';
-      else
-        $msg = '<h3>Wrong password</h3>';
+      $msg = 'Wrong username or password';
    }
   }
 
@@ -60,7 +59,9 @@ error_reporting(E_ALL);
    <fieldset>
      <legend><h2>Login here</h2></legend>   
      <form role = "form" action = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method = "post">
-     <?php echo $msg; ?>
+     <?php 
+       if ($msg != "")
+         echo "<div class=\"errorDiv\">Error: " . $msg . "</div>"; ?>
      <input type = "text" name = "username" placeholder = "username" required autofocus></br>
      <input type = "password" name = "password" placeholder = "password" required><br>
      <button type = "submit" name = "login">Login</button>

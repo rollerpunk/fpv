@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<title>allIView</title>
 <link rel="icon" href="albom.ico" type="image/x-icon">
 <link rel="stylesheet" href="albom.css">
 <script src="functions.js" type="text/javascript"> </script>
@@ -21,8 +22,7 @@ error_reporting(E_ALL);
 
   if(isset($_GET["galery"])) // check if it was direct link
   {
-    $_SESSION["dbname"]=$_GET["galery"];
-    //TODO: get ftp staff
+    $_SESSION["dbname"]=$_GET["galery"]; //TODO:   give good name as it would be visible
   }
 
   if(!isset($_SESSION["dbname"]))// check if galery name is know.it may go from login or from link
@@ -30,10 +30,10 @@ error_reporting(E_ALL);
     header( "Location: login.php" ); //not enought info to continue. go to login
   }
 
-
-
   printMenuP1(); // create common part of top menu
+
   $conn_id=getFtp();  //connect to ftp
+
 //-----------start---------
   
   printMenuP2();
