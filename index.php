@@ -34,6 +34,10 @@ error_reporting(E_ALL);
 
   $conn_id=getFtp();  //connect to ftp
 
+  if ($conn_id==false)
+  {
+     header( "Location: login.php" ); // ftp problem
+  }
 //-----------start---------
   
   printMenuP2();

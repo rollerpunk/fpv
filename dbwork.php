@@ -303,7 +303,9 @@ function decript($ciphertext_dec1,$key1)// data storred in 64format in sql
     
     return  $plaintext_dec ;
 }
-
+//---------------------
+//delete user  TODO FIXME
+//---------------------
 function delUser($user,$pass)
 {
   if (userOk($name,$pass))
@@ -328,7 +330,15 @@ function delUser($user,$pass)
 
 }
 
-
+function galeryOk()
+{
+  $table= $_SESSION['dbname'];
+  //check table
+  if(sendSql("DESCRIBE `$table`")) {
+     header( "Location: index.php" );
+  }
+  return false;   
+}
 
 
 ?>

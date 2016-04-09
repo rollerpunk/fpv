@@ -45,8 +45,12 @@ error_reporting(E_ALL);
   //on go to galery
   if (isset($_POST['albom']) && !empty($_POST['galery']))
   {
-     $_SESSION['dbname'] = $_POST['galery'];      
-     header( "Location: index.php" ); //got to view liblary  TODO: use correct lib
+     $_SESSION['dbname'] = $_POST['galery'];
+     if (!galeryOk())
+     {
+	$msg2="No such gallery: <b>".$_SESSION['dbname']."</b>";
+     }
+    
   }
 ?>  
 
@@ -73,7 +77,9 @@ error_reporting(E_ALL);
    <fieldset>
      <legend><h2>I have galery name</h2></legend>   
      <form role = "form" action = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method = "post">
-     <?php echo $msg2; ?>
+      <?php 
+       if ($msg2 != "")
+         echo "<div class=\"errorDiv\">Error: " . $msg2 . "</div>"; ?>
      <input type = "text" name = "galery" placeholder = "galery name" required autofocus></br>
      <button type = "submit" name = "albom">View the galery</button>
    </form>  

@@ -150,12 +150,13 @@ function getFtp()
 //connect to ftp
 
    $conn_id = ftp_connect($ftp_server);
-   if (!@ftp_login($conn_id, $ftp_user_name, $ftp_user_pass))
+   if (ftp_login($conn_id, $ftp_user_name, $ftp_user_pass))
    {
-     echo "<div class=\"footer errorDiv\">FTP login error<div class=\"settings\">add: '" . $ftp_server. "'<br>Name: '" .  $ftp_user_name. "'<br>Pass: '" . $ftp_user_pass . "'</div></div>"; // TODO: add more details soon
-     return NULL;
+     return $conn_id;
    }
-   return $conn_id;
+   echo "<div class=\"footer errorDiv\">FTP login error<div class=\"settings\">add: '" . $ftp_server. "'<br>Name: '" .  $ftp_user_name. "'<br>Pass: '" . $ftp_user_pass . "'</div></div>"; // TODO: add more details soon
+   return false;
+   
 }
 
 
