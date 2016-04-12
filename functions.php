@@ -166,8 +166,8 @@ function getFtp()
 //----------------------------------
 
 //first part
-function printMenuP1(){ //noselect
-  echo "<div class=\"mainMenu \"><div class=\"menuHeader\">allIView</div>";
+function printMenuP1(){ //
+  echo "<div class=\"mainMenu noselect\"><div class=\"menuHeader\">allIView</div>";
   if(isset($_SESSION["dbname"]))
     echo "<div class=\"galeryName\">" . $_SESSION["dbname"] . "</div>";
  }
@@ -176,7 +176,7 @@ function printMenuP1(){ //noselect
 //ending
 function printMenuP2(){
   echo "<div class=\"rightMenu\">
-    <a href=\"help.htm\" class =\"settings\">?</a>";
+    <a href=\"help.htm\" class =\"settings\">?</a> ";
     
   //settings and logout is only for users  
   if(isset( $_SESSION['username'])) //TODO put settings creation here ?
