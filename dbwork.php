@@ -8,6 +8,11 @@
 
 function userOk($name,$pass)
 {
+//TODO:  
+// hide encription data into DB
+// data shoulby encripted/decripted by "original" password as key
+
+
   //common start
   $conn=dbConnect();
 
@@ -104,9 +109,10 @@ function addUser($name,$pass,$table)
   }
   
   
-  //check table
-  if(sendSql("DESCRIBE `$table`")) {
-     return "Gallery name <b>$table</b> already occupied";
+  //check table  
+  if(galeryOk($table))
+  {
+    return "Gallery name <b>$table</b> already occupied";
   }
   
   //try to create ftp-table first
@@ -272,10 +278,6 @@ function encript($key,$plaintext)
     echo "<div >text: <i> ". $plaintext ."</i><br>key: <br><b>". $key."</b><br>to64<br>". base64_encode($key);
     echo "<br>from64<br>".base64_decode($key)."</div>";
   }
-  
-  
-  
-  
   return $ciphertext;
 
   # === WARNING ===
@@ -303,39 +305,72 @@ function decript($ciphertext_dec1,$key1)// data storred in 64format in sql
     
     return  $plaintext_dec ;
 }
+
+
 //---------------------
-//delete user  TODO FIXME
+//delete user
 //---------------------
-function delUser($user,$pass)
+function delUser($name,$pass)
 {
   if (userOk($name,$pass))
   {
+  
+    //TODO  double check if delete user
+    
+    
     $table=$_SESSION['dbname']; //  set by userOk
 
     //delete table/galery
-    $sql="DROP TABLE `".$table."'"; 
-    $res =sendSql($sql); 
-    if (!$res)
+    if (galeryOk($table))
     {
-      return false; //something wrong . strange
-    }
+      $sql="DROP TABLE ".$table; 
+      $res =sendSql($sql); 
+      if (!$res)
+      {
+	return $res; //something wrong . strange
+      } 
+    } 
+    //no table here.continue
      
-     //delete user
-     $sql="DELETE FROM userlist WHERE u=".hashIt($name);
+    //delete user
+    $conn=dbConnect();
+
+    /* create a prepared statement */  
+    $sth = $conn->stmt_init();       
+    if (!$sth->prepare('DELETE FROM userlist WHERE u=?'))
+    {
+      return "Fail<br>Error: %s" . $conn->error;
+    }
+
+    $xx=hashIt($name);
+    $sth->bind_param('s',$xx);
+    if (!$sth->execute())
+    {
+      return "Fail<br>Error: %s" . $conn->error;
+    }
+
+    /* close all */
+    $sth->close();
+    $conn->close();
+
+    header( "Location: msg.php?msg='User <b>".$name."</b> was deleted" ); //notify and go to login
   }
   else
   {  
-     header( "Location: login.php" ); //fuck you. go and loginonce again
+    return "User <b>".$name."</b> was not deleted" ; 
   }
 
 }
 
-function galeryOk()
+//------------------
+// checks if given correct gallery name
+//-----------------
+
+function galeryOk($table)
 {
-  $table= $_SESSION['dbname'];
   //check table
   if(sendSql("DESCRIBE `$table`")) {
-     header( "Location: index.php" );
+     return true;
   }
   return false;   
 }

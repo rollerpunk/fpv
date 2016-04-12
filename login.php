@@ -46,11 +46,14 @@ error_reporting(E_ALL);
   if (isset($_POST['albom']) && !empty($_POST['galery']))
   {
      $_SESSION['dbname'] = $_POST['galery'];
-     if (!galeryOk())
+     if (!galeryOk($_SESSION['dbname']))
      {
 	$msg2="No such gallery: <b>".$_SESSION['dbname']."</b>";
      }
-    
+     else
+     {
+       header( "Location: index.php" );
+     }
   }
 ?>  
 
@@ -75,7 +78,7 @@ error_reporting(E_ALL);
 
   <div class="formsField"> 
    <fieldset>
-     <legend><h2>I have galery name</h2></legend>   
+     <legend><h2>I have gallery name</h2></legend>   
      <form role = "form" action = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method = "post">
       <?php 
        if ($msg2 != "")

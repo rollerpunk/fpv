@@ -16,7 +16,7 @@ $alboms=array();
 // scale img to thumnails
 // returns zoomed-out,rotared img in base64 format
 //-------------------------------------------
-function scaleImg($filename,$zoom=150)
+function scaleImg($filename,$zoom=190)
 {
 // gets img from $filename roteare and zoom to 
   $smallImg="small.jpg";

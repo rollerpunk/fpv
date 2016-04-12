@@ -39,7 +39,7 @@ error_reporting(E_ALL);
         {
           if(addFtp($_POST['ftpName'],$_POST['ftpUser'],$_POST['ftpPass'])==true)
           {
-            header( "Location: index.php" ); //got to liblary
+                header( "Location: msg.php?msg=User <b>".$_POST['username']."</b> was created&dist=index.php" ); //notify and go to login
           }
           else //problem with ftp
           {

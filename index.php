@@ -22,21 +22,23 @@ error_reporting(E_ALL);
 
   if(isset($_GET["galery"])) // check if it was direct link
   {
-    $_SESSION["dbname"]=$_GET["galery"]; //TODO:   give good name as it would be visible
+    $_SESSION["dbname"]=$_GET["gallery"]; //TODO:   give good name as it would be visible
   }
 
-  if(!isset($_SESSION["dbname"]))// check if galery name is know.it may go from login or from link
+  if(!galeryOk($_SESSION["dbname"]))// check if galery name is know.it may go from login or from link
   {
-    header( "Location: login.php" ); //not enought info to continue. go to login
+    header( "Location: msg.php?msg=Gallery <b>".$name."</b> was not found" ); //notify and go to login
   }
 
+
+  
   printMenuP1(); // create common part of top menu
 
   $conn_id=getFtp();  //connect to ftp
 
   if ($conn_id==false)
-  {
-     header( "Location: login.php" ); // ftp problem
+  {  //TODO redirect to settings ??
+     header( "Location: msg.php?msg=Problem with FTP connection" ); //notify and go to login
   }
 //-----------start---------
   

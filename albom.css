@@ -47,7 +47,7 @@ img.albTitle{
 .albPhoto{
   display:inline-block;
   margin: 5px;
-  width:160px;
+  width:200px;
   text-align:center;
 }
 
@@ -253,19 +253,10 @@ h2{
 
 
 .delUser{
-  display:none;
-  position:fixed:
-  top:center;
-  left:center;
-  background-color:#F3F653F;
-}
+  background-color:#BD1313;
+  padding:5px;
+  border-radius: 3px;
 
-
-.centered {
-  top: 50%;
-  left: 50%;
-  /* bring your own prefixes */
-  transform: translate(-50%, -50%);
 }
 
 
@@ -277,5 +268,14 @@ h2{
     text-align:left;
 }
 
+.delDiv1{
+    border-radius: 4px;
+    background-color:#FF9494;
+    margin:20px; 
+    display:block;
+    padding:15px;
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5), 0px 2px 10px 0px rgba(0, 0, 0, 0.12) !important;
 
+
+}
 
