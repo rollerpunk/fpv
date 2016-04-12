@@ -149,13 +149,13 @@ function getFtp()
 
 //connect to ftp
 
-   $conn_id = ftp_connect($ftp_server);
-   if (ftp_login($conn_id, $ftp_user_name, $ftp_user_pass))
-   {
-     return $conn_id;
-   }
-   echo "<div class=\"footer errorDiv\">FTP login error<div class=\"settings\">add: '" . $ftp_server. "'<br>Name: '" .  $ftp_user_name. "'<br>Pass: '" . $ftp_user_pass . "'</div></div>"; // TODO: add more details soon
-   return false;
+  $conn_id = @ftp_connect($ftp_server);
+  if (@ftp_login($conn_id, $ftp_user_name, $ftp_user_pass))
+  {
+    return $conn_id;
+  }
+  echo "<div class=\"footer errorDiv\"><h3>FTP login error</h3><div class=\"settings\">Address: '" . $ftp_server. "'<br>Name: '" .  $ftp_user_name. "'<br>Pass: '" . $ftp_user_pass . "'</div></div>"; // TODO: add more details soon
+  return false;
    
 }
 
@@ -174,12 +174,17 @@ function printMenuP1(){ //noselect
 
 
 //ending
-function printMenuP2(){ //TODO:LOGOUT
+function printMenuP2(){
   echo "<div class=\"rightMenu\">
-<a href=\"help.htm\" class =\"settings\">?</a>
-<a href=\"#\" class =\"settings\" onclick=\"settingsShow()\"  >&Xi;</a> ";// TODO: should be only for loginned users
-echo "<a href=\"login.php\" class =\"settings\" onclick=\"logOut()\"  >&#215;</a></div></div>";
-
+    <a href=\"help.htm\" class =\"settings\">?</a>";
+    
+  //settings and logout is only for users  
+  if(isset( $_SESSION['username'])) //TODO put settings creation here ?
+  {
+    echo "<a href=\"#\" class =\"settings\" onclick=\"settingsShow()\"  >&Xi;</a> ";
+    echo "<a href=\"login.php\" class =\"settings\" onclick=\"logOut()\"  >&#215;</a>";
+  }
+  echo "</div></div>";
 }
 
 //--------------------------------
@@ -245,7 +250,7 @@ function delArrayElem($array,$id)
 
 
 function createSettings()
-{//TODO: make it dinamicaly created
+{//TODO: make it dinamicly created
 
  echo "<div id=\"setup\"style=\"display: none;\"><form>
         
@@ -394,6 +399,87 @@ if(!function_exists('hash_equals')) //emulate this function if not present
     }
   }
 }
+
+
+//-----------------
+//create random key for encription
+//-----------------
+function createKey($length = 64)
+{
+
+  $characters = '0123456789abcdef';
+  $charactersLength = strlen($characters);
+  $randomString = '';
+  for ($i = 0; $i < $length; $i++) {
+      $randomString .= $characters[rand(0, $charactersLength - 1)];
+  }
+
+  
+  return pack('H*', $randomString);
+  //16, 24 or 32 byte keys for AES-128, 192 and 256 respectively
+}
+
+
+//------------------------
+ # --- ENCRYPTION ---
+  # the key should be random binary
+  # key is specified using hexadecimal
+//------------------------
+function encript($key,$plaintext)
+{
+
+  //$key = base64_decode($key1);
+  
+  # create a random IV to use with CBC encoding
+  $iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC);
+  $iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
+  
+  # creates a cipher text compatible with AES (Rijndael block size = 128)
+  # to keep the text confidential 
+  # only suitable for encoded input that never ends with value 00h
+  # (because of default zero padding)
+  $ciphertext = mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $key, $plaintext, MCRYPT_MODE_CBC, $iv);
+
+  # prepend the IV for it to be available for decryption
+  $ciphertext = $iv . $ciphertext; 
+  
+  
+  //----check how to decode------
+  //if (decript($ciphertext,$key)!=$plaintext)
+  {
+    echo "<div >text: <i> ". $plaintext ."</i><br>key: <br><b>". $key."</b><br>to64<br>". base64_encode($key);
+    echo "<br>from64<br>".base64_decode($key)."</div>";
+  }
+  return $ciphertext;
+
+  # === WARNING ===
+  # Resulting cipher text has no integrity or authenticity added
+  # and is not protected against padding oracle attacks.
+}   
+
+//---------------------
+//  # --- DECRYPTION ---  
+//--------------------
+function decript($ciphertext_dec1,$key1)// data storred in 64format in sql
+{
+    $ciphertext_dec=base64_decode($ciphertext_dec1);
+    $key = base64_decode($key1); //if save as string in b64 in db
+
+    $iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC);
+    # retrieves the IV, iv_size should be created using mcrypt_get_iv_size()
+    $iv_dec = substr($ciphertext_dec, 0, $iv_size);
+    
+    # retrieves the cipher text (everything except the $iv_size in the front)
+    $ciphertext_dec = substr($ciphertext_dec, $iv_size);
+
+    # may remove 00h valued characters from end of plain text
+    $plaintext_dec = mcrypt_decrypt(MCRYPT_RIJNDAEL_128, $key, $ciphertext_dec, MCRYPT_MODE_CBC, $iv_dec);
+    
+    return  $plaintext_dec ;
+}
+
+
+
 
 //--------------------
 //to delete all cookies  TODO: do I need it ?

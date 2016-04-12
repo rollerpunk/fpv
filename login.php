@@ -20,7 +20,6 @@ error_reporting(E_ALL);
   session_unset(); // clear session variables 
   cleanCookie(); // clear all cookies
   printMenuP1(); // create common part of top menu
-
 //-----------start-------
 
   
@@ -36,7 +35,7 @@ error_reporting(E_ALL);
    $xx=userOk($_POST['username'], $_POST['password']);
    if ($xx) 
    {          
-      header( "Location: index.php" ); //login ok.go to liblary TODO: use correct lib
+      header( "Location: index.php" );
    }else {
       $msg = 'Wrong username or password';
    }

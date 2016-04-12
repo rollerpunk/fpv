@@ -15,7 +15,6 @@ error_reporting(E_ALL);
   require "functions.php";
   session_start(); // Start the session.must be after class defenitin
   printMenuP1(); // create common part of top menu
-
 //-----------start-------
 
   printMenuP2(); // common menu finish
@@ -43,7 +42,7 @@ error_reporting(E_ALL);
           }
           else //problem with ftp
           {
-            //TODO:redirect to settings to fix ftp problem
+            //TODO:redirect to settings to fix ftp problem ?? or continue ??
             $msg = '<h3>Problem with FTP</h3>';
           }  
         }

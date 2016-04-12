@@ -12,16 +12,15 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-$adr="login.php";
+  $adr="login.php";
+  if(isset($_GET["dist"]))
+  {
+    $adr= $_GET["dist"];
+  }
 
-if(isset($_GET["dist"]))
-{
-  $adr= $_GET["dist"];
-}
+  header('Refresh: 10; URL='.$adr); // redirect to page after 10 sec
 
-header('Refresh: 10; URL='.$adr);
-
-  ?>
+?>
 
 <a href="<?php echo $adr;?>">
 <div style="display:inline-block">

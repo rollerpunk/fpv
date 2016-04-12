@@ -22,7 +22,7 @@ error_reporting(E_ALL);
 
   if(isset($_GET["galery"])) // check if it was direct link
   {
-    $_SESSION["dbname"]=$_GET["gallery"]; //TODO:   give good name as it would be visible
+    $_SESSION["dbname"]=$_GET["gallery"]; 
   }
 
   if(!galeryOk($_SESSION["dbname"]))// check if galery name is know.it may go from login or from link
@@ -31,31 +31,33 @@ error_reporting(E_ALL);
   }
 
 
+
+
   
   printMenuP1(); // create common part of top menu
-
-  $conn_id=getFtp();  //connect to ftp
-
-  if ($conn_id==false)
-  {  //TODO redirect to settings ??
-     header( "Location: msg.php?msg=Problem with FTP connection" ); //notify and go to login
-  }
-//-----------start---------
-  
+//-----------start---------  
   printMenuP2();
  
+  $conn_id=getFtp();  //connect to ftp
+  if ($conn_id==false)
+  {  //TODO redirect to settings ??
+      header('Refresh: 20; URL=msg.php?msg=Problem with FTP connection' ); //notify and go to login
+  }
+  else
+  {  
+    echo "<div class=\"albomField\">";
+    scanDirs($conn_id,"/"); // create albums according to ftp file tree
+    $_SESSION["alboms"] = $GLOBALS['alboms'];
+    // TODO: sort albums 
+    printAlbums();  //list all albums
+    echo "</div>";
 
+    createSettings();
+    ftp_close($conn_id);
+  }
   
-  echo "<div class=\"albomField\">";
-  scanDirs($conn_id,"/"); // create albums according to ftp file tree
-  $_SESSION["alboms"] = $GLOBALS['alboms'];
-  // TODO: sort albums 
-  printAlbums();  //list all albums
-  echo "</div>";
-
-  createSettings();
-//-------------end--------------
-  ftp_close($conn_id);
+  
+  
 ?>
 </body>
 

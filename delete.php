@@ -19,7 +19,7 @@ error_reporting(E_ALL);
 
   if($_SESSION['del'] = true)//check if it's allowed to delete
   {
-   //TODO FIXME uncomment : header( "Location: login.php" ); //somethin unclear. do not allow to delete.
+   //TODO FIXME uncomment me soon when 'del' to be introduced.// header( "Location: login.php" ); //somethin unclear. do not allow to delete.
   }
   
   
